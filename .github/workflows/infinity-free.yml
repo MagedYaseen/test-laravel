@@ -1,0 +1,27 @@
+name: Deploy to InfinityFree (Educational Version)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy App via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ سحب الكود من GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ رفع الملفات على InfinityFree عن طريق FTP
+      - name: Upload files to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftpupload.net
+          username: if0_40717256
+          password: 2FKvdxvRVwa8
+          server-dir: /htdocs/
+          log-level: standard
