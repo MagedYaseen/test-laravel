@@ -11,6 +11,11 @@ Route::get('/about', function () {
 });
 
 
+Route::get('/contact', function () {
+    return view('contact');
+});
+
+
 Route::get('/migrate', function () {
     \Artisan::call('migrate', [
         '--seed' => true,
