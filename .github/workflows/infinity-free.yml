@@ -20,8 +20,8 @@ jobs:
       - name: Upload files to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftpupload.net
-          username: if0_40717256
-          password: 2FKvdxvRVwa8
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /htdocs/
           log-level: standard
