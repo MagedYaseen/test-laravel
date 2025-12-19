@@ -1,4 +1,4 @@
-name: Deploy to InfinityFree (Educational Version)
+name: Deploy Laravel to InfinityFree
 
 on:
   workflow_dispatch:
@@ -8,16 +8,41 @@ on:
 
 jobs:
   deploy:
-    name: Deploy App via FTP
+    name: Build & Deploy Laravel
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ سحب الكود من GitHub
+      # 1️⃣ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ رفع الملفات على InfinityFree عن طريق FTP
-      - name: Upload files to InfinityFree
+      # 2️⃣ Set up PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      # 3️⃣ Set up Node.js (for assets)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 4️⃣ Build Laravel locally
+      - name: Build Laravel
+        run: |
+          chmod +x .github/scripts/build-laravel.sh
+          ./.github/scripts/build-laravel.sh
+
+      # 5️⃣ Optional: test secrets visibility (educational)
+      - name: Test Secrets Visibility
+        run: |
+          echo "FTP server is ${{ secrets.FTP_SERVER }}"
+          echo "FTP username is ${{ secrets.FTP_USERNAME }}"
+          echo "FTP password is secret-hidden"
+
+      # 6️⃣ Deploy via FTP using Secrets
+      - name: Deploy to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -25,3 +50,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /htdocs/
           log-level: standard
+          dangerous-clean-slate: false
