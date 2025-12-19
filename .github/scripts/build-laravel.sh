@@ -2,7 +2,7 @@
 set -e
 
 echo "Installing Composer dependencies..."
-composer install --no-dev --optimize-autoloader
+composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 echo "Copying .env.production to .env..."
 cp .env.production .env
